@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Serializator;
 
 public class SaveSlotsMenu : Menu
 {
@@ -29,7 +28,10 @@ public class SaveSlotsMenu : Menu
             Debug.Log("New Game on Clicked");
            await DataPersistanceManager.Instance.NewGame();
         }
-        //DataPersistanceManager.Instance.SaveGame();
+        else
+        {
+            await DataPersistanceManager.Instance.LoadGame();
+        }
         SceneManager.LoadScene(DataPersistanceManager.Instance.GetLevel()+2);
     }
     public void OnBackClicked()
@@ -37,10 +39,6 @@ public class SaveSlotsMenu : Menu
         mainMenu.ActivateMenu();
         this.DeactivateMenu();
     }
-    //private void Start()
-    //{
-    //    ActivateMenu();
-    //}
     public async void ActivateMenu(bool isLoadingGame)
     {
         this.gameObject.SetActive(true);
@@ -55,6 +53,7 @@ public class SaveSlotsMenu : Menu
             saveSlots[Iter].SetSaveId(item.Key);
             saveSlots[Iter].SetData(item.Value);
             saveSlots[Iter].SetInteractible(true);
+            Debug.Log("SaveId: "+item.Key + "Position: "+ item.Value.playerPosition.ToString());
             if (firstSelected.Equals(backButton.gameObject))
             {
                 firstSelected = saveSlots[Iter].gameObject;
@@ -77,7 +76,7 @@ public class SaveSlotsMenu : Menu
             }
             Iter++;
         }
-        Button firstSelectedButton=firstSelected.GetComponent<Button>();
+        Button firstSelectedButton = firstSelected.GetComponent<Button>();
         SetFirstSelected(firstSelectedButton);
     }
     public void DeactivateMenu()

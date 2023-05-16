@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,15 +5,14 @@ using UnityEngine.UI;
 
 public class Register : MonoBehaviour
 {
-    IDatabaseHandler databaseHandler = null;
     [SerializeField] private TMP_InputField userNameInput;
     [SerializeField] private TMP_InputField passwordInput;
     [SerializeField] private TMP_InputField confirmPasswordInput;
     [SerializeField] private Button registerButton;
     [SerializeField] private Button loginButton;
+    [SerializeField] private TMP_Text messageText;
     private void Awake()
     {
-        databaseHandler = new DatabaseHandler();
         userNameInput.interactable = true;
         passwordInput.interactable = true;
         confirmPasswordInput.interactable = true;
@@ -25,8 +21,14 @@ public class Register : MonoBehaviour
     }
     void Start()
     {
+        messageText.gameObject.SetActive(false);
         registerButton.onClick.AddListener(RegisterUser);
         loginButton.onClick.AddListener(GoToLoginPage);
+    }
+    private void ShowMessage(string message)
+    {
+        messageText.text = message;
+        messageText.gameObject.SetActive(true);
     }
     async void RegisterUser()
     {
@@ -37,12 +39,14 @@ public class Register : MonoBehaviour
         if (nameEmpty)
         {
             Debug.Log("Incorrect name, try again");
+            ShowMessage("Incorrect name, try again");
             return;
         }
-        nameTaken = await databaseHandler.UserExistsAsync(userName);
+        nameTaken = await DataPersistanceManager.Instance.dataHandler.UserExistsAsync(userName);
         if (nameTaken)
         {
             Debug.Log("This name is already taken, enter another");
+            ShowMessage("This name is already taken, enter another");
             return;
         }
         string password, repeatPassword;
@@ -52,21 +56,24 @@ public class Register : MonoBehaviour
         if (emptyPassword)
         {
             Debug.Log("Incorrent password, try again");
+            ShowMessage("Incorrent password, try again");
             return;
         }
         repeatPassword = confirmPasswordInput.text;
         passwordMismatch = (password != repeatPassword);
         if (passwordMismatch)
         {
-            Debug.Log("mismatch in password, try again");
+            Debug.Log("Mismatch in password, try again");
+            ShowMessage("Mismatch in password, try again");
             return;
         }
-        await databaseHandler.AddUserAsync(new User
+        await DataPersistanceManager.Instance.dataHandler.AddUserAsync(new Serializator.User
         {
             Name = userName,
             Password = password
         });
         Debug.Log("Registered Successfully");
+        ShowMessage("Registered Successfully");
     }
     void GoToLoginPage()
     {

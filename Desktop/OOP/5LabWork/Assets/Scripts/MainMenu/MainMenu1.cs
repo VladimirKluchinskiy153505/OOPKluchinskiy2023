@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,7 +12,9 @@ public class MainMenu1 : Menu
     [SerializeField] private Button registrationButton;
     private void Start()
     {
-        registrationButton.onClick.AddListener(() => { SceneManager.LoadScene(0);});
+        registrationButton.onClick.AddListener(() => {
+            DataPersistanceManager.Instance.Reset1();
+            SceneManager.LoadScene(0);});
         if (!DataPersistanceManager.Instance.HasGameData())
         {
             continueGameButton.interactable = false;

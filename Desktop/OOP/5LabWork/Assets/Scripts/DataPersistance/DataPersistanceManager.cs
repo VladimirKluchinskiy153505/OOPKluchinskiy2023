@@ -1,11 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
-using System;
 using System.Threading.Tasks;
+using Serializator;
 
 public class DataPersistanceManager : MonoBehaviour
 {
@@ -14,13 +12,9 @@ public class DataPersistanceManager : MonoBehaviour
     private int selectedSaveId;
     [SerializeField] private bool disableDataPersistence = false;
     [SerializeField] private bool initializeDataIfNull = false;
-    //[SerializeField] private bool overrideSelectedProfileId = false;
-    //[SerializeField] private string testSelectedProfileId = "test";
-    //[Header("File Storage Config")]
-    //[SerializeField] private string fileName;
     private GameData gameData;
     private List<IDataPersistance> dataPersistanceobjects;
-    IDatabaseHandler dataHandler;
+    public IDatabaseHandler dataHandler;
     public static DataPersistanceManager Instance { get; private set; }
     public void SetUserId(int userId)
     {
@@ -31,19 +25,12 @@ public class DataPersistanceManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
         selectedSaveId = 0;
-        dataHandler =new DatabaseHandler();
+        dataHandler = (IDatabaseHandler)new Serializator.DatabaseHandler();
         if (dataHandler != null)
         {
             Debug.Log("Success");
         }
         else { Debug.Log("Error"); }
-        //if (Instance != null)
-        //{
-        //    Debug.Log("Found more than one Data persistance manager in the scene.Destroying the newest one");
-        //    Destroy(this.gameObject);
-        //    return;
-        //}
-        //Instance = this;
         if(disableDataPersistence)
         {
             Debug.LogWarning("Data persistance is currently disabled!");
@@ -58,7 +45,7 @@ public class DataPersistanceManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-           await DataPersistanceManager.Instance.SaveGame();
+           await SaveGame();
             SceneManager.LoadScene(2);
         }
     }
@@ -74,15 +61,13 @@ public class DataPersistanceManager : MonoBehaviour
     }
     public async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //Instance = this;
         Debug.Log("On Scene Loaded Called");
         this.dataPersistanceobjects = FindAllDataPersistanceObjects();
         if (this.selectedSaveId != 0) { await LoadGame(); }
     }
     public void OnSceneUnloaded(Scene scene)
     {
-        Debug.Log("On SceneUnloaded Called");
-       // SaveGame();
+          Debug.Log("On SceneUnloaded Called");
     }
     public void ChangeSelectedSaveId(int newSaveId)
     {
@@ -138,8 +123,6 @@ public class DataPersistanceManager : MonoBehaviour
         }
         gameData.lastUpdated=System.DateTime.Now.ToBinary();
         await dataHandler.Save(gameData,currentUserId, selectedSaveId);
-
-        //dataHandler.SaveLevelNumber(SceneManager.GetActiveScene().buildIndex, selectedProfileId);
     }
     public int GetLevel()
     {
@@ -154,17 +137,12 @@ public class DataPersistanceManager : MonoBehaviour
     {
         gameData.playerPosition = Vector3.zero;
         gameData.levelNum++;
-        //gameData.characterLives = FindObjectOfType<Character>().Lives;
         gameData.characterLives = 14;
         dataHandler.Save(gameData, currentUserId, selectedSaveId);
     }
-    //public void ResetPoition()
-    //{
-    //    dataHandler.Save(new GameData(), selectedProfileId);
-    //}
-    private async Task OnApplicationQuit()
+    private void OnApplicationQuit()
     {
-       await SaveGame();
+        SaveGame().Wait();
     }
     private List<IDataPersistance> FindAllDataPersistanceObjects()
     {
@@ -172,6 +150,7 @@ public class DataPersistanceManager : MonoBehaviour
         IEnumerable<IDataPersistance> dataPersistanceObjects=FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistance>();
         return new List<IDataPersistance>(dataPersistanceObjects);
     }
+
     public bool HasGameData()
     {
         return selectedSaveId != 0;
@@ -179,5 +158,11 @@ public class DataPersistanceManager : MonoBehaviour
     public async Task<Dictionary<int, GameData>> GetAllProfilesGameData()
     {
         return await dataHandler.LoadAllProfiles(currentUserId);
+    }
+    public void Reset1()
+    {
+        this.selectedSaveId = 0;
+        this.currentUserId = 0;
+        this.gameData = null;
     }
 }

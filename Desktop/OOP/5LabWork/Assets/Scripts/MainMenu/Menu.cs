@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -10,7 +7,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private Button firstSelected;
     protected virtual void OnEnable()
     {
-       SetFirstSelected(firstSelected);
+        SetFirstSelected(firstSelected);
     }
     public void SetFirstSelected(Button firstSelectedButton)
     {

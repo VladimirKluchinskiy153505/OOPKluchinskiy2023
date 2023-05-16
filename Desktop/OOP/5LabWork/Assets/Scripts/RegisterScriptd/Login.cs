@@ -1,28 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Serializator;
 
 public class Login : MonoBehaviour
 {
-    IDatabaseHandler databaseHandler = null;
     [SerializeField]private TMP_InputField userNameInput;
     [SerializeField]private TMP_InputField passwordInput;
     [SerializeField]private Button loginButton;
     [SerializeField]private Button returnButton;
+    [SerializeField] private TMP_Text messageText;
 
-    private void Awake()
-    {
-        databaseHandler = new DatabaseHandler();
-    }
     void Start()
     {
+        messageText.gameObject.SetActive(false);
         loginButton.onClick.AddListener(LoginUser);
         returnButton.onClick.AddListener(GoToSingUpPage);
+    }
+    private void ShowMessage(string message)
+    {
+        messageText.text = message;
+        messageText.gameObject.SetActive(true);
     }
     private async void LoginUser()
     {
@@ -35,20 +34,28 @@ public class Login : MonoBehaviour
         emptyPassword = (password == null) || (password == string.Empty);
         if (emptyName || emptyPassword)
         {
-            Debug.Log("Password or UserName Are Incorrect");
+            Debug.Log("Password or UserName Is Incorrect");
+            ShowMessage("Password or UserName Is Incorrect");
             return;
         }
-        User user = await databaseHandler.GetUserByNameAsync(userName);
+        User user = await DataPersistanceManager.Instance.dataHandler.GetUserByNameAsync(userName);
         if (user == null)
         {
-            Debug.Log("Password or UserName Are Incorrect");
+            Debug.Log("Password or UserName Is Incorrect");
+            ShowMessage("Password or UserName Is Incorrect");
             return;
         }
         if (user.Password == password)
         {
             DataPersistanceManager.Instance.SetUserId(user.Id);
             Debug.Log("You are entered");
+            ShowMessage("You are entered");
             SceneManager.LoadScene(2);
+        }
+        else
+        {
+            Debug.Log("Password or UserName Is Incorrect");
+            ShowMessage("Password or UserName Is Incorrect");
         }
     }
     private void GoToSingUpPage()

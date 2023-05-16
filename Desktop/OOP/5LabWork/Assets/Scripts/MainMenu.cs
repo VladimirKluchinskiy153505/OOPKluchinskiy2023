@@ -9,9 +9,9 @@ public class MainMenu : MonoBehaviour
     {
         Cursor.visible = true;
     }
-    public void PlayGame()
+    public async void PlayGame()
     {
-        DataPersistanceManager.Instance.NewGame();
+       await DataPersistanceManager.Instance.NewGame();
         SceneManager.LoadScene(0);
     }
     public void ExitGame()
