@@ -1,0 +1,17 @@
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\x86\e_sqlite3.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\x64\e_sqlite3.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\Serializator.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\Serializator.pdb
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLite-net.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLitePCLRaw.batteries_green.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLitePCLRaw.batteries_v2.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLitePCLRaw.core.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\UnityEngine.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\SQLite-net.xml
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\bin\Release\UnityEngine.xml
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\obj\Release\Serializator.csproj.AssemblyReference.cache
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\obj\Release\Serializator.csproj.CoreCompileInputs.cache
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\obj\Release\Serializator.csproj.CopyComplete
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\obj\Release\Serializator.dll
+C:\Users\avdot\Desktop\OOP\SQlSerializatorDLL\Serializator\obj\Release\Serializator.pdb
