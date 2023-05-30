@@ -1,0 +1,24 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Menu : MonoBehaviour
+{
+    [Header("First Selected button")]
+    [SerializeField] private Button firstSelected;
+    protected virtual void OnEnable()
+    {
+        SetFirstSelected(firstSelected);
+    }
+    public void SetFirstSelected(Button firstSelectedButton)
+    {
+        firstSelectedButton.Select();
+    }
+    public void Activate()
+    {
+        if (firstSelected != null)
+        {
+            SetFirstSelected(firstSelected);
+        }
+    }
+
+}
